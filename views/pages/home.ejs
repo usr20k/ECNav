@@ -1,0 +1,28 @@
+<% include ../partials/header %>
+	<div class="container">
+		<h1>ECNav</h1>
+		<!-- Search form -->
+		<form action="/search" method="get">
+			<div class="input-group">
+				<input type="text" class="form-control" placeholder="Search" id="search_input" name="search_input">
+				<div class="input-group-btn">
+					<button class="btn btn-primary btn-block" type="submit" style="margin-left:10px;">
+						Search
+					</button>
+				</div>
+			</div>
+		</form>
+		<br>
+		<% if(search_result != null)
+		{%>
+				<%
+				var rooms = '';
+				search_result.forEach(function(item){
+			  		 rooms += '<p><b>Room Name:</b> ' + item.wing_id + ' ' + item.room_num + ' <b>Room Type:</b> ' + item.room_type + ' <b>Image:</b> ' + item.image_name + '</p>';
+			  	 }); %>
+				<h3>Results:</h3>
+			  	 <%- rooms %> 
+	 <% }%>
+	</div>
+  
+<% include ../partials/footer %>
