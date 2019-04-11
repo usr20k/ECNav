@@ -8,6 +8,8 @@
 var express = require('express'); //Ensure our express framework has been added
 var app = express();
 var mysql = require("mysql");
+var fs = require("fs");
+
 var bodyParser = require('body-parser'); //Ensure our body-parser tool has been added
 app.use(bodyParser.json());              // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
@@ -329,5 +331,4 @@ app.get('/search', function(req, res) {
 //});
 //
 //
-app.listen(3000);
-console.log('3000 is the magic port');
+app.listen(process.env.PORT);
