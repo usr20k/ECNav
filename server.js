@@ -7,7 +7,7 @@
 ***********************/
 var express = require('express'); //Ensure our express framework has been added
 var app = express();
-var mysql = require("mysql");
+var mysql = require('/node_modules/mysql');
 
 var bodyParser = require('body-parser'); //Ensure our body-parser tool has been added
 app.use(bodyParser.json());              // support json encoded bodies
