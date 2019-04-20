@@ -228,15 +228,15 @@ app.get('/search', function(req, res) {
 //  });
 //});
 //
-//// registration page 
-//app.get('/register', function(req, res) {
-//	res.render('pages/register',{
-//		my_title:"Registration Page"
-//	});
-//});
-//
-///*Add your other get/post request handlers below here: */
-//// team stats:
+// registration page 
+app.get('/register', function(req, res) {
+	res.render('pages/register',{
+		my_title:"Registration Page"
+	});
+});
+
+/*Add your other get/post request handlers below here: */
+// team stats:
 //app.get('/team_stats', function(req, res) {
 //  var query0 = 'SELECT * FROM football_games;';
 //  var query1 = 'SELECT COUNT(*) FROM football_games AS count WHERE home_score > visitor_score;';
@@ -267,7 +267,7 @@ app.get('/search', function(req, res) {
 //      })
 //  });
 //});
-//
+
 //// registration page 
 //app.get('/player_info', function(req, res) {
 //  var query0 = 'SELECT * FROM football_players ORDER BY name;';
