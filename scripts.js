@@ -16,7 +16,7 @@
 			while(zoomLevel>0){
 				zoomOut();
 			}
-			displayInfo("CSEL 150")
+			//displayInfo("CSEL 150")
 			document.getElementsByClassName("speech-bubble")[0].style.display = "block";
 			document.getElementsByClassName("speech-bubble")[0].style.top = (y-document.getElementsByClassName("speech-bubble")[0].offsetHeight+10) + "px";
 			document.getElementsByClassName("speech-bubble")[0].style.left = (x-document.getElementsByClassName("speech-bubble")[0].offsetWidth+20) + "px";

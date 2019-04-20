@@ -56,10 +56,28 @@ app.get('/', function(req, res) {
   var query1 = "select * from room_data"
   res.render('pages/home',{
 //        local_css: "signin.css",
-        my_title: "Login Page",
+        my_title: "EC Nav",
         search_result:null
       })
   });
+  
+// test page 
+app.get('/test', function(req, res) {
+  //var query1 = "select * from room_data"
+  res.render('pages/test',{
+//        local_css: "signin.css",
+        my_title: "Test Page",
+        search_result:null
+      })
+  });  
+  
+app.get('/login', function(req, res) {
+  //var query1 = "select * from room_data"
+  res.render('pages/login',{
+//        local_css: "signin.css",
+        my_title: "Login Page"
+      })
+  });  
   
 //Our main search functionality:
 app.get('/search', function(req, res) {
@@ -94,13 +112,13 @@ app.get('/search', function(req, res) {
             if (err){ 
               res.render('pages/home',{
       //        local_css: "signin.css",
-              my_title: "Login Page",
+              my_title: "Search Results",
               search_result:null
             });
             }
             res.render('pages/home',{
       //        local_css: "signin.css",
-              my_title: "Login Page",
+              my_title: "Search Results",
               search_result:result
             });
           console.log(result);
@@ -116,13 +134,13 @@ app.get('/search', function(req, res) {
             if (err){ 
               res.render('pages/home',{
       //        local_css: "signin.css",
-              my_title: "Login Page",
+              my_title: "Search Results",
               search_result:null
             });
             }
             res.render('pages/home',{
       //        local_css: "signin.css",
-              my_title: "Login Page",
+              my_title: "Search Results",
               search_result:result
             });
           console.log(result);
@@ -138,13 +156,13 @@ app.get('/search', function(req, res) {
             if (err){ 
               res.render('pages/home',{
       //        local_css: "signin.css",
-              my_title: "Login Page",
+              my_title: "Search Results",
               search_result:null
             });
             }
             res.render('pages/home',{
       //        local_css: "signin.css",
-              my_title: "Login Page",
+              my_title: "Search Results",
               search_result:result
             });
           console.log(result);
@@ -164,13 +182,13 @@ app.get('/search', function(req, res) {
           if (err){ 
             res.render('pages/home',{
     //        local_css: "signin.css",
-            my_title: "Login Page",
+            my_title: "Search Results",
             search_result:null
           });
           }
           res.render('pages/home',{
     //        local_css: "signin.css",
-            my_title: "Login Page",
+            my_title: "Search Results",
             search_result:result
           });
         console.log(result);
@@ -185,7 +203,7 @@ app.get('/search', function(req, res) {
     
     res.render('pages/home',{
   //        local_css: "signin.css",
-          my_title: "Login Page",
+          my_title: "Search Results",
           search_result:null
         });
     
