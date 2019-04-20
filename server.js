@@ -38,10 +38,24 @@ var con = mysql.createConnection({
   database: "ecmapatc_roomdata"
 });
 
+var user_con = mysql.createConnection({
+  host: "138.68.243.154",
+  port: "3306",
+  user: "ecmapatc_su",
+  password: "u$eradm!n",
+  database: "ecmapatc_users"
+});
+
 con.connect(function(err) {
   if (err) throw err;
-  console.log("Connected!");
+  console.log("Connected to room database.");
 });
+
+user_con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected to user database.");
+});
+
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
@@ -57,7 +71,8 @@ app.get('/', function(req, res) {
   res.render('pages/home',{
 //        local_css: "signin.css",
         my_title: "EC Nav",
-        search_result:null
+        search_result:null,
+        user:null
       })
   });
   
@@ -67,7 +82,8 @@ app.get('/test', function(req, res) {
   res.render('pages/test',{
 //        local_css: "signin.css",
         my_title: "Test Page",
-        search_result:null
+        search_result:null,
+        user:null
       })
   });  
   
@@ -82,7 +98,11 @@ app.get('/login', function(req, res) {
 //Our main search functionality:
 app.get('/search', function(req, res) {
 	var search_input = req.query.search_input;
-  
+  if(req.query.user){
+    var user = req.query.user;
+  } else {
+    var user = null;
+  }
   //If our input is valid:
   if (search_input != ''){
     
@@ -113,13 +133,15 @@ app.get('/search', function(req, res) {
               res.render('pages/home',{
       //        local_css: "signin.css",
               my_title: "Search Results",
-              search_result:null
+              search_result:null,
+              username:user
             });
             }
             res.render('pages/home',{
       //        local_css: "signin.css",
               my_title: "Search Results",
-              search_result:result
+              search_result:result,
+              username:user
             });
           console.log(result);
         });
@@ -135,13 +157,15 @@ app.get('/search', function(req, res) {
               res.render('pages/home',{
       //        local_css: "signin.css",
               my_title: "Search Results",
-              search_result:null
+              search_result:null,
+              username:user
             });
             }
             res.render('pages/home',{
       //        local_css: "signin.css",
               my_title: "Search Results",
-              search_result:result
+              search_result:result,
+              username:user
             });
           console.log(result);
         });
@@ -157,13 +181,15 @@ app.get('/search', function(req, res) {
               res.render('pages/home',{
       //        local_css: "signin.css",
               my_title: "Search Results",
-              search_result:null
+              search_result:null,
+              username:user
             });
             }
             res.render('pages/home',{
       //        local_css: "signin.css",
               my_title: "Search Results",
-              search_result:result
+              search_result:result,
+              username:user
             });
           console.log(result);
         });
@@ -183,13 +209,15 @@ app.get('/search', function(req, res) {
             res.render('pages/home',{
     //        local_css: "signin.css",
             my_title: "Search Results",
-            search_result:null
+            search_result:null,
+            username:user
           });
           }
           res.render('pages/home',{
     //        local_css: "signin.css",
             my_title: "Search Results",
-            search_result:result
+            search_result:result,
+            username:user
           });
         console.log(result);
       });
@@ -204,7 +232,8 @@ app.get('/search', function(req, res) {
     res.render('pages/home',{
   //        local_css: "signin.css",
           my_title: "Search Results",
-          search_result:null
+          search_result:null,
+          username:user
         });
     
   }
@@ -251,6 +280,43 @@ app.get('/register', function(req, res) {
 	res.render('pages/register',{
 		my_title:"Registration Page"
 	});
+});
+
+app.post('/reg_user', function(req, res) {
+  
+  var username = req.body.username;
+  var pass = req.body.pass;
+  
+  if (username != '' && pass != ''){
+	var insert_statement = "INSERT INTO users(username, password) VALUES('" + username + "','" + pass +"');";
+  console.log("uname and pass entered.");
+  user_con.query(insert_statement, function (err, result) {
+      if (err){ 
+        res.render('pages/home',{
+//        local_css: "signin.css",
+        my_title: "Search Results",
+        search_result:null,
+        user:null
+      });
+      }
+      res.render('pages/home',{
+//        local_css: "signin.css",
+        my_title: "Search Results",
+        search_result:null,
+        user:username
+      });
+    //console.log(username);
+  });
+  }
+  else {
+    console.log("You left your name or password blank.")
+      res.render('pages/home',{
+//        local_css: "signin.css",
+        my_title: "Search Results",
+        search_result:null,
+        user:null
+      });
+  }
 });
 
 /*Add your other get/post request handlers below here: */
