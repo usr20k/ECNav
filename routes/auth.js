@@ -33,7 +33,7 @@ router.get('/callback', function (req, res, next) {
       if (err) { return next(err); }
       const returnTo = req.session.returnTo;
       delete req.session.returnTo;
-      res.redirect('/user'); //rmoved returnTo ||
+      res.redirect(returnTo || '/user'); //rmoved returnTo ||
     });
   })(req, res, next);
 });
