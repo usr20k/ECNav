@@ -11,7 +11,7 @@ var mysql = require('mysql');
 
 //Used by auth0------------------------------------------------
 var session = require('express-session');
-var profile = null;
+var userProfile = null;
 // config express-session
 var sess = {
   secret: 'XLFLK98935jFnkfgsjp30',
@@ -33,7 +33,7 @@ dotenv.config();
 // Load Passport
 var passport = require('passport');
 var Auth0Strategy = require('passport-auth0');
-console.log("test initiated");
+
 // Configure Passport to use Auth0
 var strategy = new Auth0Strategy(
   {
@@ -41,22 +41,15 @@ var strategy = new Auth0Strategy(
     clientID: process.env.AUTH0_CLIENT_ID,
     clientSecret: process.env.AUTH0_CLIENT_SECRET,
     callbackURL:
-      process.env.AUTH0_CALLBACK_URL || 'http://localhost:3000/'
+      process.env.AUTH0_CALLBACK_URL || 'http://localhost:3000/callback'
   },
   function (accessToken, refreshToken, extraParams, profile, done) {
     // accessToken is the token to call Auth0 API (not needed in the most cases)
     // extraParams.id_token has the JSON Web Token
     // profile has all the information from the user
-    console.log("access initiated");
-    console.log(extraParams);
     return done(null, profile);
   }
 );
-
-passport.use(strategy);
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 // You can use this section to keep a smaller payload
 passport.serializeUser(function (user, done) {
@@ -67,79 +60,19 @@ passport.deserializeUser(function (user, done) {
   done(null, user);
 });
 
-var router = express.Router();
-var passport = require('passport');
-var dotenv = require('dotenv');
-var util = require('util');
-var url = require('url');
-var querystring = require('querystring');
-//var secured = require('../lib/middleware/secured');
+passport.use(strategy);
 
-dotenv.config();
+app.use(passport.initialize());
+app.use(passport.session());
 
-// Perform the login, after login Auth0 will redirect to callback
-app.get('/login', passport.authenticate('auth0', {
-  scope: 'openid email profile'
-}), function (req, res) {
-  console.log("login initiated");
-  res.redirect('/');
-});
+var userInViews = require('./lib/middleware/userInViews');
+var authRouter = require('./routes/auth');
+var usersRouter = require('./routes/users');
 
-// Perform the final stage of authentication and redirect to previously requested URL or '/user'
-app.get('/callback', function (req, res, next) {
-  passport.authenticate('auth0', function (err, user, info) {
-    console.log("callback initiated");
-    if (err) { return next(err); }
-    if (!user) { return res.redirect('/login'); }
-    req.logIn(user, function (err) {
-      if (err) { return next(err); }
-      const returnTo = req.session.returnTo;
-      delete req.session.returnTo;
-      res.redirect(returnTo || '/user');
-    });
-  })(req, res, next);
-});
-
-// Perform session logout and redirect to homepage
-app.get('/logout', (req, res) => {
-  req.logout();
-  console.log("logout initiated");
-  var returnTo = req.protocol + '://' + req.hostname;
-  var port = req.connection.localPort;
-  if (port !== undefined && port !== 80 && port !== 443) {
-    returnTo += ':' + port;
-  }
-  var logoutURL = new URL(
-    util.format('https://%s/logout', process.env.AUTH0_DOMAIN)
-  );
-  var searchString = querystring.stringify({
-    client_id: process.env.AUTH0_CLIENT_ID,
-    returnTo: returnTo
-  });
-  logoutURL.search = searchString;
-
-  res.redirect(logoutURL);
-});
-
-module.exports = router;
-
-// /* GET user profile. */
-// app.get('/user', secured(), function (req, res, next) {
-//   const { _raw, _json, ...userProfile } = req.user;
-//   res.render('user', {
-//     userProfile: JSON.stringify(userProfile, null, 2),
-//     title: 'Profile page'
-//   });
-// });
-
-// userInViews.js
-
-module.exports = function () {
-  return function (req, res, next) {
-    res.locals.user = req.user;
-    next();
-  };
-};
+// ..
+app.use(userInViews());
+app.use('/', authRouter);
+app.use('/', usersRouter);
 
 //-------------------------------------------------------------
 
@@ -202,19 +135,19 @@ app.use(express.static(__dirname + '/'));//This line is necessary for us to use 
 // home page
 app.get('/', function(req, res) {
 
-  if(profile != null){
-    console.log(profile);
+  if(req.user != null){
+    console.log("profile found.");
     res.render('pages/home',{
           my_title: "EC Nav",
           search_result:null,
-          user:profile
+          userProfile:req.user
       })
   } else {
     console.log("no user profile found");
     res.render('pages/home',{
           my_title: "EC Nav",
           search_result:null,
-          user:null
+          userProfile:null
       })
   }
   });
@@ -233,10 +166,10 @@ app.get('/test', function(req, res) {
 //Our main search functionality:
 app.get('/search', function(req, res) {
 	var search_input = req.query.search_input;
-  if(req.query.user){
-    var user = req.query.user;
+  if(req.user){
+    var userProfile = req.user;
   } else {
-    var user = null;
+    var userProfile = null;
   }
   //If our input is valid:
   if (search_input != ''){
@@ -269,14 +202,14 @@ app.get('/search', function(req, res) {
       //        local_css: "signin.css",
               my_title: "Search Results",
               search_result:null,
-              username:user
+              userProfile:req.user
             });
             }
             res.render('pages/home',{
       //        local_css: "signin.css",
               my_title: "Search Results",
               search_result:result,
-              username:user
+              userProfile:req.user
             });
           console.log(result);
         });
@@ -293,14 +226,14 @@ app.get('/search', function(req, res) {
       //        local_css: "signin.css",
               my_title: "Search Results",
               search_result:null,
-              username:user
+              userProfile:req.user
             });
             }
             res.render('pages/home',{
       //        local_css: "signin.css",
               my_title: "Search Results",
               search_result:result,
-              username:user
+              userProfile:req.user
             });
           console.log(result);
         });
@@ -317,14 +250,14 @@ app.get('/search', function(req, res) {
       //        local_css: "signin.css",
               my_title: "Search Results",
               search_result:null,
-              username:user
+              userProfile:req.user
             });
             }
             res.render('pages/home',{
       //        local_css: "signin.css",
               my_title: "Search Results",
               search_result:result,
-              username:user
+              userProfile:req.user
             });
           console.log(result);
         });
@@ -345,14 +278,14 @@ app.get('/search', function(req, res) {
     //        local_css: "signin.css",
             my_title: "Search Results",
             search_result:null,
-            username:user
+            userProfile:req.user
           });
           }
           res.render('pages/home',{
     //        local_css: "signin.css",
             my_title: "Search Results",
             search_result:result,
-            username:user
+            userProfile:req.user
           });
         console.log(result);
       });
@@ -368,7 +301,7 @@ app.get('/search', function(req, res) {
   //        local_css: "signin.css",
           my_title: "Search Results",
           search_result:null,
-          username:user
+          userProfile:req.user
         });
 
   }

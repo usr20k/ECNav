@@ -5,10 +5,13 @@ var router = express.Router();
 /* GET user profile. */
 router.get('/user', secured(), function (req, res, next) {
   const { _raw, _json, ...userProfile } = req.user;
-  res.render('user', {
-    userProfile: JSON.stringify(userProfile, null, 2),
-    title: 'Profile page'
-  });
+  console.log("logged in, loading home page.");
+  console.log(userProfile);
+  res.render('pages/home',{
+          my_title: "EC Nav",
+          search_result:null,
+          userProfile: userProfile
+      })
 });
 
 module.exports = router;
