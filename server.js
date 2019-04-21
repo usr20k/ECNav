@@ -40,7 +40,8 @@ var strategy = new Auth0Strategy(
     domain: 'rapid-fog-9438.auth0.com',
     clientID: 'C7chjSM8WSo4Uw2twH6p4SCI6QSy47EC',
     clientSecret: 'cKrsVhnif7G3dkhxkVpvJdc2uws7aXDCiH6Ugnx6RywL1nxT5xQ6-UIT9fuvY0HJ',
-    callbackURL: 'https://ecmap.herokuapp.com/callback'
+    callbackURL: 'https://ecmap.herokuapp.com/callback',
+    state: false
   },
 
   function (accessToken, refreshToken, extraParams, profile, done) {
