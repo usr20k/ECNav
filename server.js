@@ -37,13 +37,13 @@ var Auth0Strategy = require('passport-auth0');
 // Configure Passport to use Auth0
 var strategy = new Auth0Strategy(
   {
-    domain: 'rapid-fog-9438.auth0.com',
-    clientID: 'C7chjSM8WSo4Uw2twH6p4SCI6QSy47EC',
-    clientSecret: 'cKrsVhnif7G3dkhxkVpvJdc2uws7aXDCiH6Ugnx6RywL1nxT5xQ6-UIT9fuvY0HJ',
-    callbackURL: 'https://ecmap.herokuapp.com/callback',
-    state: false
+    domain: process.env.AUTH0_DOMAIN,
+    clientID: process.env.AUTH0_CLIENT_ID,
+    clientSecret: process.env.AUTH0_CLIENT_SECRET,
+    callbackURL:
+      process.env.AUTH0_CALLBACK_URL || 'http://localhost:3000/callback',
+      state: true
   },
-
   function (accessToken, refreshToken, extraParams, profile, done) {
     // accessToken is the token to call Auth0 API (not needed in the most cases)
     // extraParams.id_token has the JSON Web Token
@@ -51,11 +51,6 @@ var strategy = new Auth0Strategy(
     return done(null, profile);
   }
 );
-
-
-  //console.log(process.env.AUTH0_DOMAIN);
-  //console.log(process.env.AUTH0_CLIENT_ID);
-  //console.log(process.env.AUTH0_CALLBACK_URL);
 
 // You can use this section to keep a smaller payload
 passport.serializeUser(function (user, done) {
@@ -103,7 +98,6 @@ function isLetter(c) {
   password: This the password for accessing the database.  You'll need to set a password USING THE PSQL TERMINAL THIS IS NOT A PASSWORD FOR POSTGRES USER ACCOUNT IN LINUX!
 **********************/
 
-//Connection to the room database:
 var con = mysql.createConnection({
   host: "138.68.243.154",
   port: "3306",
@@ -112,7 +106,6 @@ var con = mysql.createConnection({
   database: "ecmapatc_roomdata"
 });
 
-//**DEPRECATED** Connection to the user database:
 var user_con = mysql.createConnection({
   host: "138.68.243.154",
   port: "3306",
@@ -174,8 +167,8 @@ app.get('/test', function(req, res) {
 //Our main search functionality:
 app.get('/search', function(req, res) {
 	var search_input = req.query.search_input;
-  if(req.userProfile){
-    var userProfile = req.userProfile;
+  if(req.user){
+    var userProfile = req.user;
   } else {
     var userProfile = null;
   }
@@ -210,14 +203,14 @@ app.get('/search', function(req, res) {
       //        local_css: "signin.css",
               my_title: "Search Results",
               search_result:null,
-              userProfile:userProfile
+              userProfile:req.user
             });
             }
             res.render('pages/home',{
       //        local_css: "signin.css",
               my_title: "Search Results",
               search_result:result,
-              userProfile:userProfile
+              userProfile:req.user
             });
           console.log(result);
         });
@@ -234,14 +227,14 @@ app.get('/search', function(req, res) {
       //        local_css: "signin.css",
               my_title: "Search Results",
               search_result:null,
-              userProfile:userProfile
+              userProfile:req.user
             });
             }
             res.render('pages/home',{
       //        local_css: "signin.css",
               my_title: "Search Results",
               search_result:result,
-              userProfile:userProfile
+              userProfile:req.user
             });
           console.log(result);
         });
@@ -258,14 +251,14 @@ app.get('/search', function(req, res) {
       //        local_css: "signin.css",
               my_title: "Search Results",
               search_result:null,
-              userProfile:userProfile
+              userProfile:req.user
             });
             }
             res.render('pages/home',{
       //        local_css: "signin.css",
               my_title: "Search Results",
               search_result:result,
-              userProfile:userProfile
+              userProfile:req.user
             });
           console.log(result);
         });
@@ -286,14 +279,14 @@ app.get('/search', function(req, res) {
     //        local_css: "signin.css",
             my_title: "Search Results",
             search_result:null,
-            userProfile:userProfile
+            userProfile:req.user
           });
           }
           res.render('pages/home',{
     //        local_css: "signin.css",
             my_title: "Search Results",
             search_result:result,
-            userProfile:userProfile
+            userProfile:req.user
           });
         console.log(result);
       });
@@ -309,7 +302,7 @@ app.get('/search', function(req, res) {
   //        local_css: "signin.css",
           my_title: "Search Results",
           search_result:null,
-          userProfile:userProfile
+          userProfile:req.user
         });
 
   }
@@ -352,7 +345,11 @@ app.get('/search', function(req, res) {
 //});
 //
 // registration page
-
+// app.get('/register', function(req, res) {
+// 	res.render('pages/register',{
+// 		my_title:"Registration Page"
+// 	});
+// });
 //
 // app.post('/reg_user', function(req, res) {
 //
