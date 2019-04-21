@@ -23,10 +23,10 @@ router.get('/callback', function (req, res, next) {
       console.log("ERROR1!");
       return next(err);
     }
-    if (!user) {
-      console.log("ERROR NO USER!");
-      return res.redirect('/');
-    }
+    // if (!user) {
+    //   console.log("ERROR NO USER!");
+    //   return res.redirect('/');
+    // }
     console.log("Attempting to return to user!")
     req.logIn(user, function (err) {
       if (err) { return next(err); }
