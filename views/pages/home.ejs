@@ -11,12 +11,12 @@
 		<% }%>
 		<h1>ECNav</h1>
 
-			<% if(userProfile != null)
+			<% if(userProfile != null && userProfile.displayName != undefined)
 			{%>
 						 <p>Logged in as: <%- userProfile.displayName %></p>
-		 <% }%>
-
-
+		 <% } elseif(userProfile != null && userProfile.nickname != undefined) { %>
+			 			<p>Logged in as: <%- userProfile.nickname %></p>
+		<% }%>
 
 		<!-- Search form -->
 		<form action="/search" method="get">

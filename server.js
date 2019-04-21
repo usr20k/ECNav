@@ -174,8 +174,8 @@ app.get('/test', function(req, res) {
 //Our main search functionality:
 app.get('/search', function(req, res) {
 	var search_input = req.query.search_input;
-  if(req.user){
-    var userProfile = req.user;
+  if(req.userProfile){
+    var userProfile = req.userProfile;
   } else {
     var userProfile = null;
   }
@@ -210,14 +210,14 @@ app.get('/search', function(req, res) {
       //        local_css: "signin.css",
               my_title: "Search Results",
               search_result:null,
-              userProfile:req.user
+              userProfile:userProfile
             });
             }
             res.render('pages/home',{
       //        local_css: "signin.css",
               my_title: "Search Results",
               search_result:result,
-              userProfile:req.user
+              userProfile:userProfile
             });
           console.log(result);
         });
@@ -234,14 +234,14 @@ app.get('/search', function(req, res) {
       //        local_css: "signin.css",
               my_title: "Search Results",
               search_result:null,
-              userProfile:req.user
+              userProfile:userProfile
             });
             }
             res.render('pages/home',{
       //        local_css: "signin.css",
               my_title: "Search Results",
               search_result:result,
-              userProfile:req.user
+              userProfile:userProfile
             });
           console.log(result);
         });
@@ -258,14 +258,14 @@ app.get('/search', function(req, res) {
       //        local_css: "signin.css",
               my_title: "Search Results",
               search_result:null,
-              userProfile:req.user
+              userProfile:userProfile
             });
             }
             res.render('pages/home',{
       //        local_css: "signin.css",
               my_title: "Search Results",
               search_result:result,
-              userProfile:req.user
+              userProfile:userProfile
             });
           console.log(result);
         });
@@ -286,14 +286,14 @@ app.get('/search', function(req, res) {
     //        local_css: "signin.css",
             my_title: "Search Results",
             search_result:null,
-            userProfile:req.user
+            userProfile:userProfile
           });
           }
           res.render('pages/home',{
     //        local_css: "signin.css",
             my_title: "Search Results",
             search_result:result,
-            userProfile:req.user
+            userProfile:userProfile
           });
         console.log(result);
       });
@@ -309,7 +309,7 @@ app.get('/search', function(req, res) {
   //        local_css: "signin.css",
           my_title: "Search Results",
           search_result:null,
-          userProfile:req.user
+          userProfile:userProfile
         });
 
   }
