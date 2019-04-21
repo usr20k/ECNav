@@ -37,9 +37,9 @@ var Auth0Strategy = require('passport-auth0');
 // Configure Passport to use Auth0
 var strategy = new Auth0Strategy(
   {
-    domain: process.env.AUTH0_DOMAIN,
-    clientID: process.env.AUTH0_CLIENT_ID,
-    clientSecret: process.env.AUTH0_CLIENT_SECRET,
+    domain: 'rapid-fog-9438.auth0.com',
+    clientID: 'C7chjSM8WSo4Uw2twH6p4SCI6QSy47EC',
+    clientSecret: 'cKrsVhnif7G3dkhxkVpvJdc2uws7aXDCiH6Ugnx6RywL1nxT5xQ6-UIT9fuvY0HJ',
     callbackURL: 'http://localhost:3000/callback'
   },
 
@@ -52,9 +52,9 @@ var strategy = new Auth0Strategy(
 );
 
 
-  console.log(process.env.AUTH0_DOMAIN);
-  console.log(process.env.AUTH0_CLIENT_ID);
-  console.log(process.env.AUTH0_CALLBACK_URL);
+  //console.log(process.env.AUTH0_DOMAIN);
+  //console.log(process.env.AUTH0_CLIENT_ID);
+  //console.log(process.env.AUTH0_CALLBACK_URL);
 
 // You can use this section to keep a smaller payload
 passport.serializeUser(function (user, done) {
