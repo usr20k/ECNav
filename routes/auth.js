@@ -23,7 +23,7 @@ router.get('/callback', function (req, res, next) {
     console.log("Callback initiated");
     if (err) { return next(err); }
     if (!user) {
-      console.out("No user returned.");
+      console.log("No user returned.");
       return res.redirect('/');
     }
     req.logIn(user, function (err) {
