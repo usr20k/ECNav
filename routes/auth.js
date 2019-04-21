@@ -33,7 +33,16 @@ router.get('/callback', function (req, res, next) {
       if (err) { return next(err); }
       const returnTo = req.session.returnTo;
       delete req.session.returnTo;
-      res.redirect(returnTo || '/user'); //rmoved returnTo ||
+      console.log("Attempting redirect.");
+//      res.redirect(returnTo || '/user'); //rmoved returnTo ||
+      const { _raw, _json, ...userProfile } = user;
+      console.log("Loading home page.");
+      //console.log(userProfile);
+      res.render('pages/home',{
+              my_title: "EC Nav",
+              search_result:null,
+              userProfile: userProfile
+          })
     });
   })(req, res, next);
 });
