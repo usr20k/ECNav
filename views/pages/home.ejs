@@ -1,5 +1,14 @@
 <% include ../partials/header %>
 	<div class="container">
+		<a href="login">
+		   <button class="btn btn-primary">Login</button>
+		</a>
+		<% if(userProfile != null)
+		{%>
+		<a href="logout">
+		   <button class="btn btn-primary">Log Out</button>
+		</a>
+		<% }%>
 		<h1>ECNav</h1>
 
 			<% if(userProfile != null)
