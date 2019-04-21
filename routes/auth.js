@@ -19,7 +19,7 @@ router.get('/login', passport.authenticate('auth0', {
 router.get('/callback', function (req, res, next) {
   passport.authenticate('auth0', function (err, user, info) {
     userProfile = user;
-    console.log(user);
+    console.log(err, user, info);
     console.log("Callback initiated");
     if (err) { return next(err); }
     if (!user) {
