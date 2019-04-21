@@ -30,6 +30,7 @@ function isLetter(c) {
   password: This the password for accessing the database.  You'll need to set a password USING THE PSQL TERMINAL THIS IS NOT A PASSWORD FOR POSTGRES USER ACCOUNT IN LINUX!
 **********************/
 
+//Connection to the room database:
 var con = mysql.createConnection({
   host: "138.68.243.154",
   port: "3306",
@@ -38,6 +39,7 @@ var con = mysql.createConnection({
   database: "ecmapatc_roomdata"
 });
 
+//**DEPRECATED** Connection to the user database:
 var user_con = mysql.createConnection({
   host: "138.68.243.154",
   port: "3306",
@@ -65,7 +67,7 @@ app.use(express.static(__dirname + '/'));//This line is necessary for us to use 
   GET Requests:
 **********************/
 
-// home page 
+// home page
 app.get('/', function(req, res) {
   var query1 = "select * from room_data"
   res.render('pages/home',{
@@ -75,8 +77,8 @@ app.get('/', function(req, res) {
         user:null
       })
   });
-  
-// test page 
+
+// test page
 app.get('/test', function(req, res) {
   //var query1 = "select * from room_data"
   res.render('pages/test',{
@@ -85,16 +87,16 @@ app.get('/test', function(req, res) {
         search_result:null,
         user:null
       })
-  });  
-  
+  });
+
 app.get('/login', function(req, res) {
   //var query1 = "select * from room_data"
   res.render('pages/login',{
 //        local_css: "signin.css",
         my_title: "Login Page"
       })
-  });  
-  
+  });
+
 //Our main search functionality:
 app.get('/search', function(req, res) {
 	var search_input = req.query.search_input;
@@ -105,31 +107,31 @@ app.get('/search', function(req, res) {
   }
   //If our input is valid:
   if (search_input != ''){
-    
+
     console.log("Valid search requested.");
-    
+
     //If they searched with alphas first:
     if (search_input.charAt(0).toLowerCase() != search_input.charAt(0).toUpperCase()){
-      
+
       console.log("User searched alpha first.");
       var prefix = search_input.substring(0,4);
       var number = search_input.substring(4);
-      
+
       //If they entered room number with a space:
       if (number && number.charAt(0) == ' ') {
-        
+
         console.log("Entered room number w/ a space.")
         number = number.substring(1);
-        
+
       }
-      
+
       if (prefix && number){
-        
+
         console.log("probably a properly formatted search.");
         var query1 = "select * from room_data where room_num like '" + number + "%' and wing_id like '" + prefix + "%';";
-        console.log(query1);  
+        console.log(query1);
         con.query(query1, function (err, result) {
-            if (err){ 
+            if (err){
               res.render('pages/home',{
       //        local_css: "signin.css",
               my_title: "Search Results",
@@ -145,15 +147,15 @@ app.get('/search', function(req, res) {
             });
           console.log(result);
         });
-        
+
       }
       else if (prefix && !number){
-        
+
         console.log("no room number on alpha search.");
         var query1 = "select * from room_data where wing_id like '" + prefix + "%';";
-        console.log(query1);  
+        console.log(query1);
         con.query(query1, function (err, result) {
-            if (err){ 
+            if (err){
               res.render('pages/home',{
       //        local_css: "signin.css",
               my_title: "Search Results",
@@ -169,15 +171,15 @@ app.get('/search', function(req, res) {
             });
           console.log(result);
         });
-                
+
       }
       else {
-        
+
         console.log("bad alpha search.");
         var query1 = "select * from room_data where room_num like '" + search_input + "%';";
-        console.log(query1);  
+        console.log(query1);
         con.query(query1, function (err, result) {
-            if (err){ 
+            if (err){
               res.render('pages/home',{
       //        local_css: "signin.css",
               my_title: "Search Results",
@@ -193,19 +195,19 @@ app.get('/search', function(req, res) {
             });
           console.log(result);
         });
-        
+
       }
-    
+
     }
     //Else they searched a number first or invalid input:
     else {
-     
+
       console.log("User searched a number.");
-      
+
       var query1 = "select * from room_data where room_num like '" + search_input + "%';";
-      console.log(query1);  
+      console.log(query1);
       con.query(query1, function (err, result) {
-          if (err){ 
+          if (err){
             res.render('pages/home',{
     //        local_css: "signin.css",
             my_title: "Search Results",
@@ -221,21 +223,21 @@ app.get('/search', function(req, res) {
           });
         console.log(result);
       });
-     
+
     }
-    
+
   }
   else {
-    
+
     console.log("Invalid search requested.");
-    
+
     res.render('pages/home',{
   //        local_css: "signin.css",
           my_title: "Search Results",
           search_result:null,
           username:user
         });
-    
+
   }
 
 });
@@ -245,7 +247,7 @@ app.get('/search', function(req, res) {
 //	var color_hex = req.body.color_hex;
 //	var color_name = req.body.color_name;
 //	var color_message = req.body.color_message;
-//	var insert_statement = "INSERT INTO favorite_colors(hex_value, name, color_msg) VALUES('" + color_hex + "','" + 
+//	var insert_statement = "INSERT INTO favorite_colors(hex_value, name, color_msg) VALUES('" + color_hex + "','" +
 //							color_name + "','" + color_message +"');";
 //
 //	var color_select = 'select * from favorite_colors;';
@@ -275,7 +277,7 @@ app.get('/search', function(req, res) {
 //  });
 //});
 //
-// registration page 
+// registration page
 app.get('/register', function(req, res) {
 	res.render('pages/register',{
 		my_title:"Registration Page"
@@ -283,15 +285,15 @@ app.get('/register', function(req, res) {
 });
 
 app.post('/reg_user', function(req, res) {
-  
+
   var username = req.body.username;
   var pass = req.body.pass;
-  
+
   if (username != '' && pass != ''){
 	var insert_statement = "INSERT INTO users(username, password) VALUES('" + username + "','" + pass +"');";
   console.log("uname and pass entered.");
   user_con.query(insert_statement, function (err, result) {
-      if (err){ 
+      if (err){
         res.render('pages/home',{
 //        local_css: "signin.css",
         my_title: "Search Results",
@@ -352,7 +354,7 @@ app.post('/reg_user', function(req, res) {
 //  });
 //});
 
-//// registration page 
+//// registration page
 //app.get('/player_info', function(req, res) {
 //  var query0 = 'SELECT * FROM football_players ORDER BY name;';
 //  db.task('get-everything', task => {
