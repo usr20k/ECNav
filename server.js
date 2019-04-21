@@ -97,6 +97,7 @@ function isLetter(c) {
   password: This the password for accessing the database.  You'll need to set a password USING THE PSQL TERMINAL THIS IS NOT A PASSWORD FOR POSTGRES USER ACCOUNT IN LINUX!
 **********************/
 
+//Connection to the room database:
 var con = mysql.createConnection({
   host: "138.68.243.154",
   port: "3306",
@@ -105,6 +106,7 @@ var con = mysql.createConnection({
   database: "ecmapatc_roomdata"
 });
 
+//**DEPRECATED** Connection to the user database:
 var user_con = mysql.createConnection({
   host: "138.68.243.154",
   port: "3306",
@@ -344,11 +346,7 @@ app.get('/search', function(req, res) {
 //});
 //
 // registration page
-// app.get('/register', function(req, res) {
-// 	res.render('pages/register',{
-// 		my_title:"Registration Page"
-// 	});
-// });
+
 //
 // app.post('/reg_user', function(req, res) {
 //
