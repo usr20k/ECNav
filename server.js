@@ -43,10 +43,6 @@ var strategy = new Auth0Strategy(
     callbackURL: process.env.AUTH0_CALLBACK_URL || 'http://localhost:3000/callback'
   },
 
-  console.log(process.env.AUTH0_DOMAIN);
-  console.log(process.env.AUTH0_CLIENT_ID);
-  console.log(process.env.AUTH0_CALLBACK_URL);
-
   function (accessToken, refreshToken, extraParams, profile, done) {
     // accessToken is the token to call Auth0 API (not needed in the most cases)
     // extraParams.id_token has the JSON Web Token
@@ -54,6 +50,11 @@ var strategy = new Auth0Strategy(
     return done(null, profile);
   }
 );
+
+
+  console.log(process.env.AUTH0_DOMAIN);
+  console.log(process.env.AUTH0_CLIENT_ID);
+  console.log(process.env.AUTH0_CALLBACK_URL);
 
 // You can use this section to keep a smaller payload
 passport.serializeUser(function (user, done) {
