@@ -40,7 +40,7 @@ var strategy = new Auth0Strategy(
     domain: process.env.AUTH0_DOMAIN,
     clientID: '5qcFlrD4wfu5VRXgfp6HNVdz5OX8P7Wi',
     clientSecret: process.env.AUTH0_CLIENT_SECRET,
-    callbackURL: process.env.AUTH0_CALLBACK_URL || 'https://ecmap.herokuapp.com/callback'
+    callbackURL: process.env.AUTH0_CALLBACK_URL || 'http://localhost:3000/callback'
   },
   function (accessToken, refreshToken, extraParams, profile, done) {
     // accessToken is the token to call Auth0 API (not needed in the most cases)
