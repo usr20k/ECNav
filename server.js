@@ -15,7 +15,7 @@ var userProfile = null;
 // config express-session
 var sess = {
   secret: 'XLFLK98935jFnkfgsjp30',
-  cookie: {},
+  cookie: { sameSite: false },
   resave: false,
   saveUninitialized: true
 };
