@@ -9,6 +9,73 @@ var express = require('express'); //Ensure our express framework has been added
 var app = express();
 var mysql = require('mysql');
 
+//Used by auth0------------------------------------------------
+var session = require('express-session');
+var userProfile = null;
+// config express-session
+var sess = {
+  secret: 'XLFLK98935jFnkfgsjp30',
+  cookie: {},
+  resave: false,
+  saveUninitialized: true
+};
+
+if (app.get('env') === 'production') {
+  sess.cookie.secure = true; // serve secure cookies, requires https
+}
+
+app.use(session(sess));
+
+// Load environment variables from .env
+var dotenv = require('dotenv');
+dotenv.config();
+
+// Load Passport
+var passport = require('passport');
+var Auth0Strategy = require('passport-auth0');
+
+// Configure Passport to use Auth0
+var strategy = new Auth0Strategy(
+  {
+    domain: process.env.AUTH0_DOMAIN,
+    clientID: process.env.AUTH0_CLIENT_ID,
+    clientSecret: process.env.AUTH0_CLIENT_SECRET,
+    callbackURL:
+      process.env.AUTH0_CALLBACK_URL || 'http://localhost:3000/callback'
+  },
+  function (accessToken, refreshToken, extraParams, profile, done) {
+    // accessToken is the token to call Auth0 API (not needed in the most cases)
+    // extraParams.id_token has the JSON Web Token
+    // profile has all the information from the user
+    return done(null, profile);
+  }
+);
+
+// You can use this section to keep a smaller payload
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function (user, done) {
+  done(null, user);
+});
+
+passport.use(strategy);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+var userInViews = require('./lib/middleware/userInViews');
+var authRouter = require('./routes/auth');
+var usersRouter = require('./routes/users');
+
+// ..
+app.use(userInViews());
+app.use('/', authRouter);
+app.use('/', usersRouter);
+
+//-------------------------------------------------------------
+
 var bodyParser = require('body-parser'); //Ensure our body-parser tool has been added
 app.use(bodyParser.json());              // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
@@ -69,13 +136,22 @@ app.use(express.static(__dirname + '/'));//This line is necessary for us to use 
 
 // home page
 app.get('/', function(req, res) {
-  var query1 = "select * from room_data"
-  res.render('pages/home',{
-//        local_css: "signin.css",
-        my_title: "EC Nav",
-        search_result:null,
-        user:null
+
+  if(req.user != null){
+    console.log("profile found.");
+    res.render('pages/home',{
+          my_title: "EC Nav",
+          search_result:null,
+          userProfile:req.user
       })
+  } else {
+    console.log("no user profile found");
+    res.render('pages/home',{
+          my_title: "EC Nav",
+          search_result:null,
+          userProfile:null
+      })
+  }
   });
 
 // test page
@@ -89,21 +165,13 @@ app.get('/test', function(req, res) {
       })
   });
 
-app.get('/login', function(req, res) {
-  //var query1 = "select * from room_data"
-  res.render('pages/login',{
-//        local_css: "signin.css",
-        my_title: "Login Page"
-      })
-  });
-
 //Our main search functionality:
 app.get('/search', function(req, res) {
 	var search_input = req.query.search_input;
-  if(req.query.user){
-    var user = req.query.user;
+  if(req.user){
+    var userProfile = req.user;
   } else {
-    var user = null;
+    var userProfile = null;
   }
   //If our input is valid:
   if (search_input != ''){
@@ -136,14 +204,14 @@ app.get('/search', function(req, res) {
       //        local_css: "signin.css",
               my_title: "Search Results",
               search_result:null,
-              username:user
+              userProfile:req.user
             });
             }
             res.render('pages/home',{
       //        local_css: "signin.css",
               my_title: "Search Results",
               search_result:result,
-              username:user
+              userProfile:req.user
             });
           console.log(result);
         });
@@ -160,14 +228,14 @@ app.get('/search', function(req, res) {
       //        local_css: "signin.css",
               my_title: "Search Results",
               search_result:null,
-              username:user
+              userProfile:req.user
             });
             }
             res.render('pages/home',{
       //        local_css: "signin.css",
               my_title: "Search Results",
               search_result:result,
-              username:user
+              userProfile:req.user
             });
           console.log(result);
         });
@@ -184,14 +252,14 @@ app.get('/search', function(req, res) {
       //        local_css: "signin.css",
               my_title: "Search Results",
               search_result:null,
-              username:user
+              userProfile:req.user
             });
             }
             res.render('pages/home',{
       //        local_css: "signin.css",
               my_title: "Search Results",
               search_result:result,
-              username:user
+              userProfile:req.user
             });
           console.log(result);
         });
@@ -212,14 +280,14 @@ app.get('/search', function(req, res) {
     //        local_css: "signin.css",
             my_title: "Search Results",
             search_result:null,
-            username:user
+            userProfile:req.user
           });
           }
           res.render('pages/home',{
     //        local_css: "signin.css",
             my_title: "Search Results",
             search_result:result,
-            username:user
+            userProfile:req.user
           });
         console.log(result);
       });
@@ -235,7 +303,7 @@ app.get('/search', function(req, res) {
   //        local_css: "signin.css",
           my_title: "Search Results",
           search_result:null,
-          username:user
+          userProfile:req.user
         });
 
   }
@@ -278,142 +346,43 @@ app.get('/search', function(req, res) {
 //});
 //
 // registration page
-app.get('/register', function(req, res) {
-	res.render('pages/register',{
-		my_title:"Registration Page"
-	});
-});
 
-app.post('/reg_user', function(req, res) {
-
-  var username = req.body.username;
-  var pass = req.body.pass;
-
-  if (username != '' && pass != ''){
-	var insert_statement = "INSERT INTO users(username, password) VALUES('" + username + "','" + pass +"');";
-  console.log("uname and pass entered.");
-  user_con.query(insert_statement, function (err, result) {
-      if (err){
-        res.render('pages/home',{
-//        local_css: "signin.css",
-        my_title: "Search Results",
-        search_result:null,
-        user:null
-      });
-      }
-      res.render('pages/home',{
-//        local_css: "signin.css",
-        my_title: "Search Results",
-        search_result:null,
-        user:username
-      });
-    //console.log(username);
-  });
-  }
-  else {
-    console.log("You left your name or password blank.")
-      res.render('pages/home',{
-//        local_css: "signin.css",
-        my_title: "Search Results",
-        search_result:null,
-        user:null
-      });
-  }
-});
-
-/*Add your other get/post request handlers below here: */
-// team stats:
-//app.get('/team_stats', function(req, res) {
-//  var query0 = 'SELECT * FROM football_games;';
-//  var query1 = 'SELECT COUNT(*) FROM football_games AS count WHERE home_score > visitor_score;';
-//  var query2 = 'SELECT COUNT(*) FROM football_games AS count WHERE home_score < visitor_score;';
-//  db.task('get-everything', task => {
-//      return task.batch([
-//          task.any(query0),
-//          task.any(query1),
-//          task.any(query2)
-//      ]);
-//  })
-//  .then(task => {
-//    res.render('pages/team_stats',{
-//        my_title: "Season Stats",
-//        data: task[0],
-//        wins: task[1][0].count,
-//        losses: task[2][0].count
-//      })
-//  })
-//  .catch(error => {
-//      // display error message in case an error
-//          request.flash('error', err);
-//          res.render('pages/team_stats',{
-//        my_title: "Season Stats",
-//        data: '',
-//        wins: '',
-//        losses: ''
-//      })
-//  });
-//});
-
-//// registration page
-//app.get('/player_info', function(req, res) {
-//  var query0 = 'SELECT * FROM football_players ORDER BY name;';
-//  db.task('get-everything', task => {
-//      return task.batch([
-//          task.any(query0)
-//      ]);
-//  })
-//  .then(task => {
-//    res.render('pages/player_info',{
-//        my_title: "Player Information",
-//        data: task[0],
-//        played_games: null,
-//        selected_player: null
-//      })
-//  })
-//  .catch(error => {
-//      // display error message in case an error
-//          request.flash('error', err);
-//          res.render('pages/player_info',{
-//        my_title: "Player Information",
-//        data: null,
-//        played_games: null,
-//        selected_player: null
-//      })
-//  });
-//});
 //
-//app.get('/player_info/post', function(req, res) {
-//  console.log(req.query.player_choice);
-//  var q1 = 'SELECT * FROM football_players ORDER BY name;';
-//  var q2 = "select * from football_players where id = '" + req.query.player_choice + "';";
-//  console.log("SELECT COUNT(*) FROM football_games AS count WHERE " + req.query.player_choice + " = ANY(players);");
-//  var q3  = "SELECT COUNT(*) FROM football_games AS count WHERE " + req.query.player_choice + " = ANY(players);";
-//  db.task('get-everything', task => {
-//        return task.batch([
-//      task.any(q1),
-//      task.any(q2),
-//      task.any(q3)
-//        ]);
-//    })
-//  .then(task => {
-//    res.render('pages/player_info',{
-//        my_title: "Player Information",
-//        data: task[0],
-//        selected_player: task[1],
-//        played_games: task[2][0].count
-//      })
-//  })
-//  .catch(error => {
-//      // display error message in case an error
-//          request.flash('error', err);
-//          res.render('pages/player_info',{
-//        my_title: "Player Information",
-//        selected_player: null,
-//        data: null,
-//        played_games: null
-//      })
-//  });
-//});
+// app.post('/reg_user', function(req, res) {
 //
+//   var username = req.body.username;
+//   var pass = req.body.pass;
 //
+//   if (username != '' && pass != ''){
+// 	var insert_statement = "INSERT INTO users(username, password) VALUES('" + username + "','" + pass +"');";
+//   console.log("uname and pass entered.");
+//   user_con.query(insert_statement, function (err, result) {
+//       if (err){
+//         res.render('pages/home',{
+// //        local_css: "signin.css",
+//         my_title: "Search Results",
+//         search_result:null,
+//         user:null
+//       });
+//       }
+//       res.render('pages/home',{
+// //        local_css: "signin.css",
+//         my_title: "Search Results",
+//         search_result:null,
+//         user:username
+//       });
+//     //console.log(username);
+//   });
+//   }
+//   else {
+//     console.log("You left your name or password blank.")
+//       res.render('pages/home',{
+// //        local_css: "signin.css",
+//         my_title: "Search Results",
+//         search_result:null,
+//         user:null
+//       });
+//   }
+// });
+
 app.listen(process.env.PORT);

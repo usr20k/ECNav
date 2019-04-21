@@ -1,6 +1,23 @@
 <% include ../partials/header %>
 	<div class="container">
+		<a href="login">
+		   <button class="btn btn-primary">Login</button>
+		</a>
+		<% if(userProfile != null)
+		{%>
+		<a href="logout">
+		   <button class="btn btn-primary">Log Out</button>
+		</a>
+		<% }%>
 		<h1>ECNav</h1>
+
+			<% if(userProfile != null)
+			{%>
+						 <p>Logged in as: <%- userProfile.displayName %></p>
+		 <% }%>
+
+
+
 		<!-- Search form -->
 		<form action="/search" method="get">
 			<div class="input-group">
@@ -21,8 +38,8 @@
 			  		 rooms += '<p><b>Room Name:</b> ' + item.wing_id + ' ' + item.room_num + ' <b>Room Type:</b> ' + item.room_type + ' <b>Image:</b> ' + item.image_name + '</p>';
 			  	 }); %>
 				<h3>Results:</h3>
-			  	 <%- rooms %> 
+			  	 <%- rooms %>
 	 <% }%>
 	</div>
-  
+
 <% include ../partials/footer %>
