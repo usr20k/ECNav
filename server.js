@@ -43,7 +43,9 @@ var strategy = new Auth0Strategy(
     callbackURL: process.env.AUTH0_CALLBACK_URL || 'http://localhost:3000/callback'
   },
 
-  console.log(strategy);
+  console.log(process.env.AUTH0_DOMAIN);
+  console.log(process.env.AUTH0_CLIENT_ID);
+  console.log(process.env.AUTH0_CALLBACK_URL);
 
   function (accessToken, refreshToken, extraParams, profile, done) {
     // accessToken is the token to call Auth0 API (not needed in the most cases)
