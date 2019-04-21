@@ -38,7 +38,7 @@ var Auth0Strategy = require('passport-auth0');
 var strategy = new Auth0Strategy(
   {
     domain: process.env.AUTH0_DOMAIN,
-    clientID: '5qcFlrD4wfu5VRXgfp6HNVdz5OX8P7Wi',
+    clientID: process.env.AUTH0_CLIENT_ID,
     clientSecret: process.env.AUTH0_CLIENT_SECRET,
     callbackURL: process.env.AUTH0_CALLBACK_URL || 'http://localhost:3000/callback'
   },
