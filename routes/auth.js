@@ -73,7 +73,7 @@ router.get('/logout', (req, res) => {
   });
   logoutURL.search = searchString;
 
-  res.redirect(logoutURL);
+  res.redirect('https://rapid-fog-9438.auth0.com/logout');
 });
 
 module.exports = router;
