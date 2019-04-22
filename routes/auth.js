@@ -30,7 +30,16 @@ router.get('/callback', function (req, res, next) {
       if (err) { return next(err); }
       const returnTo = req.session.returnTo;
       delete req.session.returnTo;
-      res.redirect(returnTo || '/user');
+      //res.redirect(returnTo || '/user');
+      const { _raw, _json, ...userProfile } = req.user;
+      console.log("logged in, loading home page.");
+      console.log(userProfile);
+      res.render('pages/home',{
+              my_title: "EC Nav",
+              search_result:null,
+              userProfile: userProfile
+          })
+        });
     });
   })(req, res, next);
 });
