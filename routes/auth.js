@@ -5,6 +5,7 @@ var dotenv = require('dotenv');
 var util = require('util');
 var url = require('url');
 var querystring = require('querystring');
+var secured = require('../lib/middleware/secured');
 
 dotenv.config();
 
