@@ -35,6 +35,17 @@ router.get('/callback', function (req, res, next) {
   })(req, res, next);
 });
 
+router.get('/user', secured(), function (req, res, next) {
+  const { _raw, _json, ...userProfile } = req.user;
+  console.log("logged in, loading home page.");
+  console.log(userProfile);
+  res.render('pages/home',{
+          my_title: "EC Nav",
+          search_result:null,
+          userProfile: userProfile
+      })
+});
+
 // Perform session logout and redirect to homepage
 router.get('/logout', (req, res) => {
   req.logout();
