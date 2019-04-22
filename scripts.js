@@ -1,6 +1,10 @@
 		//var realHeight = document.getElementById("map").height * 1.0;
-		var realWidth = document.getElementById("map").width * 1.0;
+		var realWidth = 0;
 		var zoomLevel = 0;
+
+		function setRealWidth(){
+		 realWidth = document.getElementById("map").width * 1.0;
+	 }
 		//left off implementing realTop and realLeft for bubbles position, same as realWidth, account for multiplicative truncation.
 		function loadImage(img){
 			document.getElementById("map").src = img;
@@ -65,4 +69,7 @@
 	}
 	displayInfo(roomNum);
 	pinDrop(x,y);
+ }
+ function testFunc(){
+	 console.log("Success!");
  }
