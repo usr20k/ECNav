@@ -75,7 +75,7 @@ app.use('/', authRouter);
 app.use('/', usersRouter);
 app.use('/users', usersRouter);
 
-//-------------------------------------------------------------
+//End auth0 setup -----------------------------------------------
 
 var bodyParser = require('body-parser'); //Ensure our body-parser tool has been added
 app.use(bodyParser.json());              // support json encoded bodies
