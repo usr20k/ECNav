@@ -17,7 +17,7 @@ var sess = {
   secret: 'XLFLK98935jFnkfgsjp30',
   cookie: { sameSite: false },
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
 };
 
 if (app.get('env') === 'production') {
