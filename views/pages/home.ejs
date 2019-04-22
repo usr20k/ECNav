@@ -8,16 +8,9 @@
 		<a href="logout">
 		   <button class="btn btn-primary">Log Out</button>
 		</a>
-					 <p>Logged in as: <%- userProfile.displayName %></p>
+					 <span>Logged in as: <%- userProfile.displayName %></span>
 		<% }%>
 		<h1>ECNav</h1>
-
-			<% if(userProfile != null)
-			{%>
-						 <p>Logged in as: <%- userProfile.displayName %></p>
-		 <% }%>
-
-
 
 		<!-- Search form -->
 		<form action="/search" method="get">
