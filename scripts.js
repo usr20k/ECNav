@@ -21,7 +21,7 @@
 			document.getElementsByClassName("speech-bubble")[0].style.top = (y-document.getElementsByClassName("speech-bubble")[0].offsetHeight+10) + "px";
 			document.getElementsByClassName("speech-bubble")[0].style.left = (x-document.getElementsByClassName("speech-bubble")[0].offsetWidth+20) + "px";
 			//alert(document.getElementsByClassName("speech-bubble")[0].style.height);
-			
+
 			while(zoomLevel!=5){
 				zoomIn();
 			}
