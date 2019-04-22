@@ -106,22 +106,9 @@ var con = mysql.createConnection({
   database: "ecmapatc_roomdata"
 });
 
-var user_con = mysql.createConnection({
-  host: "138.68.243.154",
-  port: "3306",
-  user: "ecmapatc_su",
-  password: "u$eradm!n",
-  database: "ecmapatc_users"
-});
-
 con.connect(function(err) {
   if (err) throw err;
   console.log("Connected to room database.");
-});
-
-user_con.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected to user database.");
 });
 
 
