@@ -123,7 +123,7 @@ app.use(express.static(__dirname + '/'));//This line is necessary for us to use 
 app.locals.loadInfo = function(doc){
 
   console.log("Function called!");
-  doc.getElementById("search_input").innerHTML = "TEST!!!!";
+  //doc.getElementById("search_input").innerHTML = "TEST!!!!";
 };
 
 /**********************
