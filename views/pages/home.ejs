@@ -151,7 +151,7 @@ border-top-color: #ed5a3d;
 }
 </style>
   <body onload = load()>
-    <div class="container">
+    <div class="container" style="z-index:1;">
         <a href="login">
            <button class="btn btn-primary">Login</button>
         </a>
@@ -192,7 +192,7 @@ border-top-color: #ed5a3d;
         { %>
            <div class="float-right" id = "resultCont" style = "position:fixed;">
              <div class="col-med-5">
-               <div class="shadow p-3 mb-5 bg-white rounded">
+               <div class="shadow-lg p-3 mb-5 bg-white rounded" style="z-index:1;">
                 <%
                 var rooms = '';
                 var i = 0;
