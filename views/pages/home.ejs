@@ -177,7 +177,7 @@ border-top-color: #ed5a3d;
     <div id = "buttons" style="top:140px;">
         <button onclick="zoomIn()" class = "btn btn-primary" style="box-shadow: 5px 5px 18px #888888;" id = "secondButton">+</button>
         <button onclick="zoomOut()"class = "btn btn-primary" style="box-shadow: 5px 5px 18px #888888;" id = "thirdButton">-</button>
-        <button onclick="status()" class = "btn btn-primary" style="box-shadow: 5px 5px 18px #888888;" id = "fourthButton">status</button>
+        <!-- <button onclick="status()" class = "btn btn-primary" style="box-shadow: 5px 5px 18px #888888;" id = "fourthButton">status</button> -->
         </div>
          <div style="position: relative;" id = "mapDiv">
              <img id = "map" src="../resources/img/floor01final.jpg" class="map">
@@ -189,9 +189,9 @@ border-top-color: #ed5a3d;
         <%
         if(search_result != null)
         { %>
-           <div class="float-right" id = "resultCont" style = "position:fixed;">
+           <div class="float-right" id = "resultCont" style = "position:fixed; z-index:10;">
              <div class="col-med-5">
-               <div class="shadow-lg p-3 mb-5 bg-white rounded" style="z-index:10;">
+               <div class="shadow-lg p-3 mb-5 bg-white rounded">
                 <%
                 var rooms = '';
                 var i = 0;
