@@ -1,5 +1,150 @@
 <% include ../partials/header %>
-  <script type="text/javascript" src="../../scripts.js"></script>
+<script>
+  var realWidth = document.getElementById("map").width * 1.0;
+  var zoomLevel = 0;
+  function load(){
+    document.getElementById("mapDiv").scrollLeft =  map.offsetWidth/2 - document.getElementById("mapDiv").offsetWidth/2;
+    document.getElementById("mapDiv").scrollTop =   map.offsetHeight/2 - document.getElementById("mapDiv").offsetHeight/2;
+    while(zoomLevel > -10){
+      zoomOut();
+    }
+  }
+  //left off implementing realTop and realLeft for bubbles position, same as realWidth, account for multiplicative truncation.
+  function loadImage(img){
+    document.getElementById("map").src = img;
+  }
+  //pinDrop function, passes in x and y paramaters and drops pin at that location.
+  function pinDrop(x,y) {
+    if(zoomLevel<0){
+      while(zoomLevel<0){
+        zoomIn();
+      }
+    }
+    while(zoomLevel>0){
+      zoomOut();
+    }
+    document.getElementsByClassName("speech-bubble")[0].style.display = "block";
+    document.getElementsByClassName("speech-bubble")[0].style.top = (y-document.getElementsByClassName("speech-bubble")[0].offsetHeight+15) + "px";
+    document.getElementsByClassName("speech-bubble")[0].style.left = (x-document.getElementsByClassName("speech-bubble")[0].offsetWidth+20) + "px";
+    while(zoomLevel!=-8){
+      zoomOut();
+    }
+    document.getElementById("mapDiv").scrollLeft = x * Math.pow(8/7,zoomLevel) - document.getElementById("mapDiv").offsetWidth/2;
+    document.getElementById("mapDiv").scrollTop = y * Math.pow(8/7,zoomLevel) - document.getElementById("mapDiv").offsetHeight/2;
+    }
+  function displayInfo(roomNum){
+    document.getElementsByClassName("speech-bubble")[0].innerHTML = roomNum;
+  }
+  function zoomIn(){
+  if(zoomLevel<0){
+    zoomLevel++;
+      realWidth = parseFloat(realWidth* (8/7));
+    document.getElementById("map").width = realWidth;
+      var pixelCords = document.getElementsByClassName("speech-bubble")[0];
+    document.getElementsByClassName("speech-bubble")[0].style.top = (((pixelCords.offsetTop-pixelCords.offsetHeight+10)*(8/7)) + (pixelCords.offsetHeight)+5) + "px";
+    document.getElementsByClassName("speech-bubble")[0].style.left = ((((pixelCords.offsetLeft)-pixelCords.offsetWidth+20)*(8/7)) + (pixelCords.offsetWidth)+4) + "px";
+    document.getElementById("mapDiv").scrollTop  = ((document.getElementById("mapDiv").scrollTop+(document.getElementById("mapDiv").offsetHeight/2)) * 8/7) - (document.getElementById("mapDiv").offsetHeight/2);
+    document.getElementById("mapDiv").scrollLeft = ((document.getElementById("mapDiv").scrollLeft +(document.getElementById("mapDiv").offsetWidth/2)) * 8/7) - (document.getElementById("mapDiv").offsetWidth/2);
+  }
+}
+  function zoomOut(){
+  if(zoomLevel>-13){
+    zoomLevel--;
+    realWidth = parseFloat(realWidth* (7/8));
+      document.getElementById("map").width =realWidth.toFixed(0);
+      var pixelCords = document.getElementsByClassName("speech-bubble")[0];
+    document.getElementsByClassName("speech-bubble")[0].style.top = (((pixelCords.offsetTop-pixelCords.offsetHeight-10)*(7/8)) + (pixelCords.offsetHeight)-6)+ "px";
+    document.getElementsByClassName("speech-bubble")[0].style.left = ((((pixelCords.offsetLeft)-pixelCords.offsetWidth-20)*(7/8)) + (pixelCords.offsetWidth)-6) + "px";
+    document.getElementById("mapDiv").scrollTop  = ((document.getElementById("mapDiv").scrollTop+(document.getElementById("mapDiv").offsetHeight/2)) * 7/8) - (document.getElementById("mapDiv").offsetHeight/2);
+    document.getElementById("mapDiv").scrollLeft = ((document.getElementById("mapDiv").scrollLeft +(document.getElementById("mapDiv").offsetWidth/2)) * 7/8) - (document.getElementById("mapDiv").offsetWidth/2);
+  }
+  }
+function status(){
+    loadInfo("TestRoom",4575,3870);
+  }
+ function loadInfo(roomNum,x,y){
+  displayInfo(roomNum);
+  pinDrop(x,y);
+ }
+
+</script>
+<style>
+#buttons{
+position:fixed;
+z-index:1;
+left: 10vw;
+top: 18vh;
+}
+#secondButton {
+border-radius:50%;
+font-size:30px;
+position:relative;
+z-index: 1;
+}
+#thirdButton {
+font-size:30px;
+position:relative;
+z-index: 1;
+left:20px;
+}
+#fourthButton {
+font-size:30px;
+position:relative;
+z-index: 1;
+left:40px;
+}
+#mapDiv{
+position: fixed;
+overflow: auto;
+max-width: 80vw;
+max-height: 75vh;
+left: 5vw;
+top: 0vh;
+}
+#resultCont{
+postion: fixed;
+max-width:15vw;
+max-height: 60vh;
+left: 85vw;
+top:20vh;
+}
+.speech-bubble {
+z-index: 1;
+background: #ed5a3d;
+-webkit-border-radius: 4px;
+        border-radius: 4px;
+font-size: 1rem;
+line-height: 1.3;
+margin: 0 auto 40px;
+max-width: 200px;
+padding: 15px;
+position: absolute;
+top:0px;
+left:500px;
+display:none;
+}
+.speech-bubble p {
+margin: 0 0 10px;
+}
+.speech-bubble p:last-of-type {
+margin-bottom: 0;
+}
+.speech-bubble::after {
+border-left: 20px solid transparent;
+border-top: 20px solid #efefef;
+bottom: -20px;
+content: "";
+position: absolute;
+right: 20px;
+border-top-color: #ed5a3d;
+}
+.map
+{
+    position: relative;
+    top: 0;
+    left: 0;
+}
+</style>
   <body onload = load()>
     <div class="container">
         <a href="login">
@@ -37,175 +182,29 @@
         </div>
          </div>
         <br>
-        </body>
-    <style>
-  #buttons{
-    position:fixed;
-    z-index:1;
-    left: 10vw;
-    top: 18vh;
-  }
-  #secondButton {
-    border-radius:50%;
-    font-size:30px;
-    position:relative;
-    z-index: 1;
-  }
-  #thirdButton {
-    font-size:30px;
-    position:relative;
-    z-index: 1;
-    left:20px;
-  }
-  #fourthButton {
-    font-size:30px;
-    position:relative;
-    z-index: 1;
-    left:40px;
-  }
-  #mapDiv{
-    position: fixed;
-    overflow: auto;
-    max-width: 80vw;
-    max-height: 75vh;
-    left: 5vw;
-    top: 0vh;
-  }
-  #resultCont{
-   postion: fixed;
-   max-width:15vw;
-   max-height: 60vh;
-   left: 85vw;
-   top:20vh;
- }
-  .speech-bubble {
-    z-index: 1;
-    background: #ed5a3d;
-    -webkit-border-radius: 4px;
-            border-radius: 4px;
-    font-size: 1rem;
-    line-height: 1.3;
-    margin: 0 auto 40px;
-    max-width: 200px;
-    padding: 15px;
-    position: absolute;
-    top:0px;
-    left:500px;
-    display:none;
-  }
-  .speech-bubble p {
-    margin: 0 0 10px;
-  }
-  .speech-bubble p:last-of-type {
-    margin-bottom: 0;
-  }
-  .speech-bubble::after {
-    border-left: 20px solid transparent;
-    border-top: 20px solid #efefef;
-    bottom: -20px;
-    content: "";
-    position: absolute;
-    right: 20px;
-    border-top-color: #ed5a3d;
-   }
-    .map
-    {
-        position: relative;
-        top: 0;
-        left: 0;
-    }
-    </style>
-  <script>
-    var realWidth = document.getElementById("map").width * 1.0;
-    var zoomLevel = 0;
-    function load(){
-      document.getElementById("mapDiv").scrollLeft =  map.offsetWidth/2 - document.getElementById("mapDiv").offsetWidth/2;
-      document.getElementById("mapDiv").scrollTop =   map.offsetHeight/2 - document.getElementById("mapDiv").offsetHeight/2;
-      while(zoomLevel > -10){
-        zoomOut();
-      }
-    }
-    //left off implementing realTop and realLeft for bubbles position, same as realWidth, account for multiplicative truncation.
-    function loadImage(img){
-      document.getElementById("map").src = img;
-    }
-    //pinDrop function, passes in x and y paramaters and drops pin at that location.
-    function pinDrop(x,y) {
-      if(zoomLevel<0){
-        while(zoomLevel<0){
-          zoomIn();
-        }
-      }
-      while(zoomLevel>0){
-        zoomOut();
-      }
-      document.getElementsByClassName("speech-bubble")[0].style.display = "block";
-      document.getElementsByClassName("speech-bubble")[0].style.top = (y-document.getElementsByClassName("speech-bubble")[0].offsetHeight+15) + "px";
-      document.getElementsByClassName("speech-bubble")[0].style.left = (x-document.getElementsByClassName("speech-bubble")[0].offsetWidth+20) + "px";
-      while(zoomLevel!=-8){
-        zoomOut();
-      }
-      document.getElementById("mapDiv").scrollLeft = x * Math.pow(8/7,zoomLevel) - document.getElementById("mapDiv").offsetWidth/2;
-      document.getElementById("mapDiv").scrollTop = y * Math.pow(8/7,zoomLevel) - document.getElementById("mapDiv").offsetHeight/2;
-      }
-    function displayInfo(roomNum){
-      document.getElementsByClassName("speech-bubble")[0].innerHTML = roomNum;
-    }
-    function zoomIn(){
-    if(zoomLevel<0){
-      zoomLevel++;
-        realWidth = parseFloat(realWidth* (8/7));
-      document.getElementById("map").width = realWidth;
-        var pixelCords = document.getElementsByClassName("speech-bubble")[0];
-      document.getElementsByClassName("speech-bubble")[0].style.top = (((pixelCords.offsetTop-pixelCords.offsetHeight+10)*(8/7)) + (pixelCords.offsetHeight)+5) + "px";
-      document.getElementsByClassName("speech-bubble")[0].style.left = ((((pixelCords.offsetLeft)-pixelCords.offsetWidth+20)*(8/7)) + (pixelCords.offsetWidth)+4) + "px";
-      document.getElementById("mapDiv").scrollTop  = ((document.getElementById("mapDiv").scrollTop+(document.getElementById("mapDiv").offsetHeight/2)) * 8/7) - (document.getElementById("mapDiv").offsetHeight/2);
-      document.getElementById("mapDiv").scrollLeft = ((document.getElementById("mapDiv").scrollLeft +(document.getElementById("mapDiv").offsetWidth/2)) * 8/7) - (document.getElementById("mapDiv").offsetWidth/2);
-    }
-  }
-    function zoomOut(){
-    if(zoomLevel>-13){
-      zoomLevel--;
-      realWidth = parseFloat(realWidth* (7/8));
-        document.getElementById("map").width =realWidth.toFixed(0);
-        var pixelCords = document.getElementsByClassName("speech-bubble")[0];
-      document.getElementsByClassName("speech-bubble")[0].style.top = (((pixelCords.offsetTop-pixelCords.offsetHeight-10)*(7/8)) + (pixelCords.offsetHeight)-6)+ "px";
-      document.getElementsByClassName("speech-bubble")[0].style.left = ((((pixelCords.offsetLeft)-pixelCords.offsetWidth-20)*(7/8)) + (pixelCords.offsetWidth)-6) + "px";
-      document.getElementById("mapDiv").scrollTop  = ((document.getElementById("mapDiv").scrollTop+(document.getElementById("mapDiv").offsetHeight/2)) * 7/8) - (document.getElementById("mapDiv").offsetHeight/2);
-      document.getElementById("mapDiv").scrollLeft = ((document.getElementById("mapDiv").scrollLeft +(document.getElementById("mapDiv").offsetWidth/2)) * 7/8) - (document.getElementById("mapDiv").offsetWidth/2);
-    }
-    }
-  function status(){
-      loadInfo("TestRoom",4575,3870);
-    }
-   function loadInfo(roomNum,x,y){
-    displayInfo(roomNum);
-    pinDrop(x,y);
-   }
-
-  </script>
-
-    <%
-    if(search_result != null)
-    { %>
-       <div class="float-right" id = "resultCont" style = "position:fixed;">
-         <div class="col-med-5">
-           <div class="container">
-            <%
-            var rooms = '';
-            var i = 0;
-            search_result.forEach(function(item){
-                rooms += '<div class="radio"><label><input type="radio" name="example1" onclick= "loadInfo(' + item.room_num + ',' + item.xloc + ',' + item.yloc + ')">' + " Room: " + item.wing_id + " "+ item.room_num +  '</label></div>';
-                i += 1;
-                console.log(item.room_num, item.xloc, item.yloc);
-            %>
-       <% });  %>
-       <h3>Results:</h3>
-          <%- rooms %>
+        <%
+        if(search_result != null)
+        { %>
+           <div class="float-right" id = "resultCont" style = "position:fixed;">
+             <div class="col-med-5">
+               <div class="container">
+                <%
+                var rooms = '';
+                var i = 0;
+                search_result.forEach(function(item){
+                    rooms += '<div class="radio"><label><input type="radio" name="example1" onclick= "loadInfo(' + item.room_num + ',' + item.xloc + ',' + item.yloc + ')">' + " Room: " + item.wing_id + " "+ item.room_num +  '</label></div>';
+                    i += 1;
+                    console.log(item.room_num, item.xloc, item.yloc);
+                %>
+           <% });  %>
+           <h3>Results:</h3>
+              <%- rooms %>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    <%
-  } %>
+        <%
+      } %>
 
-<% include ../partials/footer %>
+    <% include ../partials/footer %>
+
+  </body>
