@@ -115,7 +115,7 @@ con.connect(function(err) {
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
-app.use(express.static(__dirname + '/'));//This line is necessary for us to use relative paths and access our resources directory
+app.use(express.static(__dirname + '/')); //This line is necessary for us to use relative paths and access our resources directory
 
 
 /**********************
@@ -297,84 +297,5 @@ app.get('/search', function(req, res) {
   }
 
 });
-
-//
-//app.post('/home/pick_color', function(req, res) {
-//	var color_hex = req.body.color_hex;
-//	var color_name = req.body.color_name;
-//	var color_message = req.body.color_message;
-//	var insert_statement = "INSERT INTO favorite_colors(hex_value, name, color_msg) VALUES('" + color_hex + "','" +
-//							color_name + "','" + color_message +"');";
-//
-//	var color_select = 'select * from favorite_colors;';
-//	db.task('get-everything', task => {
-//    return task.batch([
-//      task.any(insert_statement),
-//      task.any(color_select)
-//    ]);
-//  })
-//  .then(info => {
-//  	res.render('pages/home',{
-//				my_title: "Home Page",
-//				data: info[1],
-//				color: color_hex,
-//				color_msg: color_message
-//			})
-//  })
-//  .catch(error => {
-//    // display error message in case an error
-//      request.flash('error', err);
-//      response.render('pages/home', {
-//        title: 'Home Page',
-//        data: '',
-//        color: '',
-//        color_msg: ''
-//      })
-//  });
-//});
-//
-// registration page
-// app.get('/register', function(req, res) {
-// 	res.render('pages/register',{
-// 		my_title:"Registration Page"
-// 	});
-// });
-//
-// app.post('/reg_user', function(req, res) {
-//
-//   var username = req.body.username;
-//   var pass = req.body.pass;
-//
-//   if (username != '' && pass != ''){
-// 	var insert_statement = "INSERT INTO users(username, password) VALUES('" + username + "','" + pass +"');";
-//   console.log("uname and pass entered.");
-//   user_con.query(insert_statement, function (err, result) {
-//       if (err){
-//         res.render('pages/home',{
-// //        local_css: "signin.css",
-//         my_title: "Search Results",
-//         search_result:null,
-//         user:null
-//       });
-//       }
-//       res.render('pages/home',{
-// //        local_css: "signin.css",
-//         my_title: "Search Results",
-//         search_result:null,
-//         user:username
-//       });
-//     //console.log(username);
-//   });
-//   }
-//   else {
-//     console.log("You left your name or password blank.")
-//       res.render('pages/home',{
-// //        local_css: "signin.css",
-//         my_title: "Search Results",
-//         search_result:null,
-//         user:null
-//       });
-//   }
-// });
 
 app.listen(process.env.PORT);
