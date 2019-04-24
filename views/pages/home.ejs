@@ -104,11 +104,12 @@ left: 5vw;
 top: 0vh;
 }
 #resultCont{
-postion: fixed;
-max-width:15vw;
-max-height: 60vh;
-left: 85vw;
-top:20vh;
+  postion: fixed;
+  overflow: auto;
+  max-width:19vw;
+  max-height: 75vh;
+  left: 85vw;
+  top:20vh;
 }
 .speech-bubble {
 z-index: 1;
@@ -174,9 +175,9 @@ border-top-color: #ed5a3d;
         </form>
     </div>
     <div id = "buttons">
-        <button onclick="zoomIn()" class = "btn btn-primary" id = "secondButton">+</button>
-        <button onclick="zoomOut()"class = "btn btn-primary" id = "thirdButton">-</button>
-        <button onclick="status()" class = "btn btn-primary" id = "fourthButton">status</button>
+        <button onclick="zoomIn()" class = "btn btn-primary" style="box-shadow: 5px 5px 18px #888888;" id = "secondButton">+</button>
+        <button onclick="zoomOut()"class = "btn btn-primary" style="box-shadow: 5px 5px 18px #888888;" id = "thirdButton">-</button>
+        <button onclick="status()" class = "btn btn-primary" style="box-shadow: 5px 5px 18px #888888;" id = "fourthButton">status</button>
         </div>
          <div style="position: relative;" id = "mapDiv">
              <img id = "map" src="../resources/img/floor01_scale_025.jpeg" class="map">
@@ -190,7 +191,7 @@ border-top-color: #ed5a3d;
         { %>
            <div class="float-right" id = "resultCont" style = "position:fixed;">
              <div class="col-med-5">
-               <div class="container">
+               <div class="shadow p-3 mb-5 bg-white rounded">
                 <%
                 var rooms = '';
                 var i = 0;
