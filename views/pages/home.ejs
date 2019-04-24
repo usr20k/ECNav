@@ -193,7 +193,7 @@ border-top-color: #ed5a3d;
                 var rooms = '';
                 var i = 0;
                 search_result.forEach(function(item){
-                    rooms += '<div class="radio"><label><input type="radio" name="example1" onclick= loadInfo(' + '\"' + item.room_num + '\"' + ',' + item.xloc + ',' + item.yloc + ')>' + " Room: " + item.wing_id + " "+ item.room_num +  '</label></div>';
+                    rooms += '<div class="radio"><label><input type="radio" name="example1" onclick= loadInfo(' + '\"' item.wing_id + item.room_num + '\"' + ',' + item.xloc + ',' + item.yloc + ')>' + " Room: " + item.wing_id + " "+ item.room_num +  '</label></div>';
                     i += 1;
                     console.log(item.room_num, item.xloc, item.yloc);
                 %>
