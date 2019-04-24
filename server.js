@@ -117,14 +117,6 @@ con.connect(function(err) {
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/'));//This line is necessary for us to use relative paths and access our resources directory
 
-/**********************
-  Functions:
-**********************/
-app.locals.loadInfo = function(doc){
-
-  console.log("Function called!");
-  doc.getElementById("search_input").innerHTML = "TEST!!!!";
-};
 
 /**********************
   GET Requests:
