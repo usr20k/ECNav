@@ -31,7 +31,7 @@
         <button onclick="status()" class = "btn btn-danger" id = "fourthButton">status</button>
         </div>
          <div style="position: relative;" id = "mapDiv">
-             <img id = "map" src="../resources/img/floor01_scale_025.jpeg" class="map"/>
+             <img id = "map" src="../resources/img/floor01_scale_025.jpeg" class="map">
           <div class="speech-bubble">
          <p><strong>Demo speech bubble</strong></p>
         </div>
@@ -181,11 +181,8 @@
    function loadInfo(roomNum,x,y){
     displayInfo(roomNum);
     pinDrop(x,y);
-    alert('load info called');
    }
-   function testy(){
-     alert('clicked bitch');
-   }
+
   </script>
 
     <%
@@ -211,5 +208,5 @@
     <%
   } %>
 
-
+<img id = "map" src="../resources/img/floor01_scale_025.jpeg" class="map">
 <% include ../partials/footer %>
