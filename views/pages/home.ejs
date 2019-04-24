@@ -151,12 +151,12 @@ border-top-color: #ed5a3d;
 </style>
   <body onload = load()>
     <div class="container" style="z-index:1; margin-bottom:10px;" >
-        <a href="login">
+        <a href="login" style="text-decoration: none;">
            <button class="btn btn-primary">Login</button>
         </a>
         <% if(userProfile != null)
         {%>
-        <a href="logout">
+        <a href="logout" style="text-decoration: none;">
            <button class="btn btn-primary">Log Out</button>
         </a>
                      <span>Logged in as: <%- userProfile.displayName %></span>
