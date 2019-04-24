@@ -1,7 +1,5 @@
 <% include ../partials/header %>
 <script>
-  var realWidth = document.getElementById("map").width * 1.0;
-  var zoomLevel = 0;
   function load(){
     document.getElementById("mapDiv").scrollLeft =  map.offsetWidth/2 - document.getElementById("mapDiv").offsetWidth/2;
     document.getElementById("mapDiv").scrollTop =   map.offsetHeight/2 - document.getElementById("mapDiv").offsetHeight/2;
@@ -182,6 +180,10 @@ border-top-color: #ed5a3d;
         </div>
          </div>
         <br>
+        <script>
+        var realWidth = document.getElementById("map").width * 1.0;
+        var zoomLevel = 0;
+        </script>
         <%
         if(search_result != null)
         { %>
@@ -204,7 +206,5 @@ border-top-color: #ed5a3d;
           </div>
         <%
       } %>
-
-    <% include ../partials/footer %>
-
   </body>
+    <% include ../partials/footer %>
