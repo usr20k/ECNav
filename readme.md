@@ -10,17 +10,17 @@ These instructions will get you a copy of the project up and running on your loc
 
 To run this application locally, you need a local installation of Node.js.  You will also need an account and developer ID/keys to use the Auth0 framework.  Clone the repo to your local machine and navigate to the root directory of the repo.  In this directory create a file named .env.  Inside of your .env file you need to define the following variables:
 
-'''
+```
 AUTH0_CLIENT_ID=your specific client ID
 AUTH0_DOMAIN=your specific auth0 server
 AUTH0_CLIENT_SECRET=your secret goes here
-'''
+```
 
 Following this, from the root directory of the repo run:
 
-'''
+```
 PORT=3000 nano server.js
-'''
+```
 
 ## Deployment
 
