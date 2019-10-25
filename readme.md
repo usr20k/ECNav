@@ -38,12 +38,10 @@ Please feel free to submit pull requests to the team.  All requests will be revi
 
 ## Authors
 
-* **Taylor Ellis** - Javascript/HTML/CSS
-* **Robbie Tennant** - Javascript/HTML/CSS
+* **Taylor Ellis** - Front End - Javascript/HTML/CSS
+* **Robbie Tennant** - Front End - Javascript/HTML/CSS
 * **Sam Fitz** - MySQL
 * **Alyvia Hildebrand** - Imaging/CAD
 * **Jason Hong** - MySQL
-* **Steven James McDonald** - Javascript/HTML/CSS
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+* **Steven James McDonald** - Back End - Javascript/HTML/CSS
 
